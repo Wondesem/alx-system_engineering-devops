@@ -1,2 +1,2 @@
-#!/bin/bash
-l -A
+ #!/bin/bash
+ls -al

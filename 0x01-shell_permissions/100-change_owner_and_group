@@ -1,2 +1,2 @@
 #!/bin/bash
-chown vincent: staff
+chown -c vincent:staff/0x00-shell_permissions

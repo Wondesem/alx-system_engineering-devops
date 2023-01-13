@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # configures new ubuntu machine with certain nginx requirements
 
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo ufw allow 80/tcp
 
 mkdir /etc/nginx/html
 touch /etc/nginx/html/index.html

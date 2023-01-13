@@ -3,17 +3,15 @@
 
 sudo apt-get update
 sudo apt-get install -y nginx
-sudo ufw allow 80/tcp
-
-mkdir /etc/nginx/html
+dir /etc/nginx/html
 touch /etc/nginx/html/index.html
 echo "Hello World!" > /etc/nginx/html/index.html
 printf %s "server {
-	listen      80 default_server;
-	listen      [::]:80 default_server;
-	root        /etc/nginx/html;
-	index       index.html index.htm;
-	    }
+		listen      80 default_server;
+		listen      [::]:80 default_server;
+		root        /etc/nginx/html;
+		index       index.html index.htm;
+}
 " > /etc/nginx/sites-available/default
 
 service nginx restart

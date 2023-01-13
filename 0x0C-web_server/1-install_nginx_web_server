@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-# Install a nginx web server listening on port 80.
-# Also, when querying nginx at its root / with a GET
-# request, it returns a page that contains the string
-
-apt update
-apt install -y nginx
+#installs nginx, listens on port 80, and returns a page with a string
+apt-get update
+apt-get -y install nginx
 ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/html/index.html
-service nginx restart
+echo "Holberton School" > /var/www/html/index.nginx-debian.html
+service nginx start

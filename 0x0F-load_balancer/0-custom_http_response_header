@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
 # configures new server
-sudo apt-get update
-sudo apt-get -y install nginx
-FILE="/etc/nginx/sites-available/default"
-sudo sed -i "22i \\\tadd_header X-Served-By $HOSTNAME;" $FILE
-sudo service nginx restart
+apt-get update
+apt-get install -y nginx
+mkdir -p /var/www/html
+touch /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.html
+touch /var/www/html/custom-404.html
+echo "Ceci n'est pas une page" > /var/www/html/custom-404.html
+printf %s "server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	add_header X-Served-By $HOSTNAME;
+	root   /var/www/html;
+	index  index.html;
+	
+		location = /redirect_me/ {
+			return 301 https://www.github.com/pasignature;
+		}
+
+	location / {
+		error_page 404 /custom-404.html;
+	}
+}" > /etc/nginx/sites-available/default
+
+service nginx restart

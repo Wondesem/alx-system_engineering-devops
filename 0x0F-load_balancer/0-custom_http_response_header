@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-#Config NGINX server with custom header response
-sudo apt-get -y update
-sudo apt-get -y upgrade
+# configures new server
+sudo apt-get update
 sudo apt-get -y install nginx
-sudo chown -R "$USER":"$USER" /var/www/
-sudo chown -R "$USER":"$USER" /etc/nginx
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-line="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=dQw4w9WgXcQ permanent;"
-sudo sed -i "26i $line" /etc/nginx/sites-available/default
-sed -i '/listen 80 default_server;/a add_header X-Served-By $hostname;' /etc/nginx/sites-available/default
+FILE="/etc/nginx/sites-available/default"
+sudo sed -i "22i \\\tadd_header X-Served-By $HOSTNAME;" $FILE
 sudo service nginx restart

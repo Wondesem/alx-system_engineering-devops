@@ -1,10 +1,25 @@
 #!/usr/bin/env bash
 # World wide web
 
-if [ $# -eq 1 ]; then
-    dom="www.$1 lb-01.$1 web-01.$1 web-02.$1"
-else
-    dom="$2.$1"
-fi
+domain="$1"   #main name to audit.
+subdomain="$2"  # Specific subdomain to audit.
 
-dig $dom | awk '/ANSWER SECTION:/{getline; split($1,b,"."); print "The subdomain", b[1], "is a", $4, "record and points to", $5}'
+lookup_host() {
+	host_record=$(
+	dig "$1" | grep -A1 'ANSWER SECTION:' | tail -n 1
+		        )
+
+	echo "$host_record" |
+		awk '{print "The subdomain","'"$subdomain"'","is a",$4,"record and points to",$5}'
+	}
+	
+	if [ "$domain" ] && [ "$subdomain" ] ; then
+		host="$subdomain.$domain"
+		lookup_host "$host"
+	elif [ "$domain" ] ; then
+		def_subdomains=(www lb-01 web-01 web-02)
+		for subdomain in "${def_subdomains[@]}" ; do
+			host="$subdomain.$domain"
+			lookup_host "$host"
+		done
+	fi

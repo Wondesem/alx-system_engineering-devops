@@ -9,3 +9,4 @@ sudo ufw allow 22/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow ssh
+sudo iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT

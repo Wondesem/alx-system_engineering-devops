@@ -8,7 +8,7 @@ import requests
 def recurse(subreddit, hot_list=[], after=""):
     """This method returns a list containing the titles of all
         hot articles for a given subreddit"""
-    headers = {"user-agent": "1637-holberton"}
+    headers = {"user-agent": "alxse"}
     if after is None:
         return hot_list
     if after == "":

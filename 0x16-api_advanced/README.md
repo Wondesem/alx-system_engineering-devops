@@ -1,19 +1,4 @@
 
-We're moving to Discord!
-In a few days, we will be leaving Slack in favor of Discord 🎉
-Click here for more information
-0x16. API advanced
-Python
-Scripting
-Back-end
-API
- By: Tim Britton - Cohort #1
- Weight: 1
- Project will start Oct 10, 2023 6:00 AM, must end by Oct 11, 2023 6:00 AM
- Checker will be released at Oct 10, 2023 12:00 PM
- An auto review will be launched at the deadline
-
-
 Background Context
 Questions involving APIs are common for interviews. Sometimes they’re as simple as ‘write a Python script that queries a given endpoint’, sometimes they require you to use recursive functions and format/sort the results.
 
@@ -219,4 +204,4 @@ GitHub repository: alx-system_engineering-devops
 Directory: 0x16-api_advanced
 File: 100-count.py
   
-Copyright © 2023 ALX, All rights reserved.
+all mandatory tasks are done

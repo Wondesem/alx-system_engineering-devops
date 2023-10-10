@@ -7,7 +7,7 @@ import requests
 def top_ten(subreddit):
     """This method prints the titles of the first 10 hot posts listed
         for a given subreddit."""
-    headers = {"user-agent": "Python3"}
+    headers = {"user-agent": "Python/requests"}
     url = "https://www.reddit.com"
     r = requests.get(f'{url}/r/{redreddit}/hot.json?limit=10', headers=headers)
     if r.status_code != 200:

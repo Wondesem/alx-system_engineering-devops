@@ -1,55 +1,44 @@
 #!/usr/bin/python3
-"""Function to count words in all hot posts of a given Reddit subreddit."""
+"""This module is in charge of making the connection with the
+    api and parses the title of all hot articles, and prints a
+    sorted count of given keywords."""
 import requests
 
 
-def count_words(subreddit, word_list, instances={}, after="", count=0):
-    """Prints counts of given words found in hot posts of a given subreddit.
-
-    Args:
-        subreddit (str): The subreddit to search.
-        word_list (list): The list of words to search for in post titles.
-        instances (obj): Key/value pairs of words/counts.
-        after (str): The parameter for the next page of the API results.
-        count (int): The parameter of results matched thus far.
-    """
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
-    headers = {
-        "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/bdov_)"
-    }
-    params = {
-        "after": after,
-        "count": count,
-        "limit": 100
-    }
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-    try:
-        results = response.json()
-        if response.status_code == 404:
-            raise Exception
-    except Exception:
-        print("")
-        return
-
-    results = results.get("data")
-    after = results.get("after")
-    count += results.get("dist")
-    for c in results.get("children"):
-        title = c.get("data").get("title").lower().split()
-        for word in word_list:
-            if word.lower() in title:
-                times = len([t for t in title if t == word.lower()])
-                if instances.get(word) is None:
-                    instances[word] = times
-                else:
-                    instances[word] += times
-
+def recurse(subreddit, hot_list=[], after=""):
+    """This method returns a list containing the titles of all
+        hot articles for a given subreddit"""
+    headers = {"user-agent": "Python/requests"}
     if after is None:
-        if len(instances) == 0:
-            print("")
-            return
-        instances = sorted(instances.items(), key=lambda kv: (-kv[1], kv[0]))
-        [print("{}: {}".format(k, v)) for k, v in instances]
+        return hot_list
+    if after == "":
+        r = requests.get('https://www.reddit.com/r/{}/hot.json'.format(
+            subreddit), headers=headers, allow_redirects=False)
     else:
-        count_words(subreddit, word_list, instances, after, count)
+        r = requests.get(
+            'https://www.reddit.com/r/{}/hot.json?after={}'.format(
+                subreddit, after), headers=headers, allow_redirects=False)
+    if r.status_code != 200:
+        return None
+    after = r.json().get("data").get("after")
+    for child in r.json().get("data").get("children"):
+        hot_list.append(child.get("data").get("title"))
+    return recurse(subreddit, hot_list, after)
+
+
+def count_words(subreddit, word_list):
+    """This method parses the title of all hot articles,
+        and prints a sorted count of given keywords."""
+    ts = recurse(subreddit)
+    if ts is None:
+        return
+    list_all = []
+    for w in word_list:
+        all_sum = 0
+        for t in ts:
+            all_sum += t.lower().split().count(w.lower())
+        if all_sum > 0:
+            list_all.append([w, all_sum])
+    list_all = sorted(list_all, key=lambda x: x[0])
+    for k, v in sorted(list_all, key=lambda x: x[1], reverse=True):
+        print("{}: {}".format(k, v))

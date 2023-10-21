@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Gracefully reloads Gunicorn.
 
-ps -C gunicorn --no-headers -o ppid,pid | awk '$1=="1" {print $2}' | while read pid; do sudo kill -s HUP "$pid"; done
+pgrep gunicorn | xargs kill -HUP
